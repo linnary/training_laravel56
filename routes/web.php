@@ -20,7 +20,7 @@ Route::get('foo', function () {
 });
 
 
-Route::get('demoone', 'DemoController@index');
+
 Route::post('demotwo', 'DemoController@demotwo');
 Route::match(['get', 'post'], '/demothree', 'DemoController@demothree');
 Route::any('/demofour', 'DemoController@demofour');
@@ -37,4 +37,18 @@ Route::get('demoseven/{id}', function ($id) {
 })->where('id', '[0-9]+');
 
 Route::resource('photos', 'PhotoController');
-Route::resource('admin/users', 'Admin\UsersController');
+//Route::resource('admin/users', 'Admin\UsersController');
+
+Route::prefix('admin')->middleware('auth')->group(function () {
+	Route::get('demoone', 'DemoController@index');
+	Route::resource('users', 'Admin\UsersController');
+});
+
+
+Route::get('login', 'LoginController@index')->name('login');
+Route::get('logout', 'LoginController@logout');
+Route::post('login', 'LoginController@authenticate');
+
+
+Route::get('/testlinenoti', 'DemoController@testlinenoti');
+Route::get('/testexcel', 'DemoController@testexcel');
